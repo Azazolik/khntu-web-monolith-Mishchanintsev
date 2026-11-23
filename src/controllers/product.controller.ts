@@ -1,0 +1,20 @@
+import { Request, Response, NextFunction } from 'express';
+import { ProductService } from '../services/product.service';
+
+const productService = new ProductService();
+
+export class ProductController {
+  static getAll(req: Request, res: Response) {
+    res.status(200).json({ status: 'success', data: productService.getAll() });
+  }
+
+  static getById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = Number(req.params.id);
+      const item = productService.getById(id);
+      res.status(200).json({ status: 'success', data: item });
+    } catch (error) {
+      next(error);
+    }
+  }
+}
