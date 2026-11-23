@@ -5,6 +5,7 @@ import { errorHandler } from './middlewares/error.middleware';
 import productRoutes from './routes/product.routes';
 import categoryRoutes from './routes/category.routes';
 import orderRoutes from './routes/order.routes';
+import authRoutes from './routes/auth.routes';
 
 const app: Express = express();
 
@@ -24,6 +25,7 @@ app.get('/api/v1/health', (req: Request, res: Response) => {
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/categories', categoryRoutes);
+app.use('/api/v1/auth', authRoutes);
 
 app.use(errorHandler);
 
