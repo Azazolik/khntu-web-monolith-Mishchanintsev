@@ -1,19 +1,26 @@
+
+import { ProductRepository } from '../repositories/product.repository';
+import { CreateProductDto } from '../dto/product.dto';
 import { AppError } from '../utils/AppError';
 
-export class ProductService {
-  private products = [
-    { id: 1, categoryId: 1, title: 'Кобзар', price: 250 },
-    { id: 2, categoryId: 2, title: 'Гаррі Поттер і філософський камінь', price: 450 },
-    { id: 3, categoryId: 1, title: 'Лісова пісня', price: 200 }
-  ];
+const productRepository = new ProductRepository();
 
-  getAll() {
-    return this.products;
+export class ProductService {
+  async getAll(page: number = 1, limit: number = 10) {
+    return productRepository.findPaginated(page, limit);
   }
 
-  getById(id: number) {
-    const product = this.products.find(p => p.id === id);
-    if (!product) throw new AppError('Книгу не знайдено', 404);
+  async getById(id: number) {
+    const product = await productRepository.findById(id);
+
+    if (!product) {
+      throw new AppError('Книгу не знайдено', 404);
+    }
+
     return product;
+  }
+
+  async create(data: CreateProductDto) {
+    return productRepository.create(data);
   }
 }
